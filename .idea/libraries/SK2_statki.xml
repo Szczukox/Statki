@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SK2-statki">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/SK2_statki_jar/SK2-statki.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

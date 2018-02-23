@@ -113,6 +113,14 @@ public class Plansza extends JPanel {
                             }
                         }
                         for (int i = 0; i <= dlugosc; i++) {
+                            if ((x) < 0 || (y + i) >= 10)
+                                continue;
+                            if (plansza[x][y + i] != Pole.POLE_PUSTE) {
+                                czy_wolne = false;
+                                break;
+                            }
+                        }
+                        for (int i = 0; i <= dlugosc; i++) {
                             if ((x - 1) < 0 || (y + i) >= 10)
                                 continue;
                             if (plansza[x - 1][y + i] != Pole.POLE_PUSTE) {
@@ -120,8 +128,8 @@ public class Plansza extends JPanel {
                                 break;
                             }
                         }
-                        if (y + 1 >= 10) {
-                        } else if (plansza[x][y + 1] != Pole.POLE_PUSTE) {
+                        if (y - 1 >= 10 || y - 1 < 0) {
+                        } else if (plansza[x][y - 1] != Pole.POLE_PUSTE) {
                             czy_wolne = false;
                         }
                         if (y + dlugosc >= 10) {
@@ -141,6 +149,10 @@ public class Plansza extends JPanel {
                             if (plansza[x + 1][y - 1] != Pole.POLE_PUSTE) {
                                 czy_wolne = false;
                             }
+                        }
+
+                        if (y + dlugosc - 1 >= 10) {
+                            czy_wolne = false;
                         }
 
                         if (plansza[x][y] == Pole.POLE_PUSTE && czy_wolne) {
@@ -163,15 +175,24 @@ public class Plansza extends JPanel {
                             }
                         }
                         for (int i = 0; i <= dlugosc; i++) {
-                            if ((x + i) >= 10 || (y - 1) < 0)
-                                if (plansza[x + i][y - 1] != Pole.POLE_PUSTE) {
-                                    czy_wolne = false;
-                                    break;
-                                }
+                            if ((x + i) >= 10 || (y) < 0)
+                                continue;
+                            if (plansza[x + i][y] != Pole.POLE_PUSTE) {
+                                czy_wolne = false;
+                                break;
+                            }
                         }
-                        if ((x + 1) >= 10) {
+                        for (int i = 0; i <= dlugosc; i++) {
+                            if ((x + i) >= 10 || (y - 1) < 0)
+                                continue;
+                            if (plansza[x + i][y - 1] != Pole.POLE_PUSTE) {
+                                czy_wolne = false;
+                                break;
+                            }
+                        }
+                        if ((x - 1) >= 10 || x - 1 < 0) {
                         } else {
-                            if (plansza[x + 1][y] != Pole.POLE_PUSTE) {
+                            if (plansza[x - 1][y] != Pole.POLE_PUSTE) {
                                 czy_wolne = false;
                             }
                         }
@@ -193,6 +214,11 @@ public class Plansza extends JPanel {
                                 czy_wolne = false;
                             }
                         }
+
+                        if (x + dlugosc - 1 >= 10) {
+                            czy_wolne = false;
+                        }
+
                         if (plansza[x][y] == Pole.POLE_PUSTE && czy_wolne) {
                             for (int i = 0; i < dlugosc; i++) {
                                 plansza[x + i][y] = Pole.STATEK;

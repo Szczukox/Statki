@@ -56,20 +56,9 @@ public class Main extends JPanel {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-
-
                     Main thisClass = new Main();
                     thisClass.setVisible(true);
-
-              //  client.stop();
-
-
-
             }
-
-
-               // thisClass.setVisible(true);
-
         });
     }
 
@@ -79,7 +68,8 @@ public class Main extends JPanel {
         JFrame frame = new JFrame("Statki");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    //     Gracz gracz1 = new Gracz(1);
-        JButton bt = new JButton("Gotowe");
+        JButton bt = new JButton("Graj");
+        JButton bt2 = new JButton("Wyjdź");
         JLabel label = new JLabel();
 
 
@@ -115,7 +105,8 @@ public class Main extends JPanel {
         label.setBounds(new Rectangle(300, 12, 67, 16));
         gracz.getPlansza().setBounds(new Rectangle(0, 0, 702, 302));
    //     gracz1.getPlansza().setBounds(new Rectangle(400, 0, 702, 702));
-        bt.setBounds(new Rectangle(150, 350, 50, 50));
+        bt.setBounds(new Rectangle(100, 550, 132, 50));
+        bt2.setBounds(new Rectangle(100, 625, 132, 50));
 
 
         bt.addActionListener(new java.awt.event.ActionListener() {
@@ -138,13 +129,23 @@ public class Main extends JPanel {
                     textField.setEnabled(false);
                     textField1.setEnabled(false);
                     clientStarted=true;
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Nie ustawiono wszystkich statków");
                 }
+            }
+        });
+
+        bt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                frame.dispose();
+                System.exit(0);
             }
         });
 
 
 
         frame.getContentPane().add(bt);
+        frame.getContentPane().add(bt2);
         frame.getContentPane().add(gracz.getPlansza());
        // frame.getContentPane().add(gracz1.getPlansza());
         frame.getContentPane().add(label);
@@ -172,6 +173,14 @@ public class Main extends JPanel {
                     client.stop();
                     client = null;
                     System.out.println("Koniec gry");
+                    JOptionPane.showMessageDialog(frame, "Koniec gry");
+                    frame.dispose();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            Main thisClass = new Main();
+                            thisClass.setVisible(true);
+                        }
+                    });
                     //    zerwanePolaczenie();
                 }
                 try {

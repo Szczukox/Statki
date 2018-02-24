@@ -29,6 +29,8 @@ public class Main extends JPanel {
     int statki_moje=5;
     int statki_przeciwnika;
 
+    private JFrame frame;
+
     public int getStrzał_x() {
         return strzał_x;
     }
@@ -66,7 +68,9 @@ public class Main extends JPanel {
         super();
         instance = this;
         JFrame frame = new JFrame("Statki");
+        this.frame = frame;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
    //     Gracz gracz1 = new Gracz(1);
         JButton bt = new JButton("Graj");
         JButton bt2 = new JButton("Wyjdź");
@@ -81,13 +85,13 @@ public class Main extends JPanel {
         JTextField textField = new JTextField();
 
         textField.setVisible(true);
-        textField.setLocation(new Point(100,400));
+        textField.setLocation(new Point(287,350));
         textField.setSize(new Dimension(132, 20));
         textField.setText("127.0.0.1");
 
         JTextField textField1 = new JTextField();
         textField1.setVisible(true);
-        textField1.setLocation(new Point(100,500));
+        textField1.setLocation(new Point(287,400));
         textField1.setSize(new Dimension(132, 20));
         textField1.setText("3490");
 
@@ -105,8 +109,8 @@ public class Main extends JPanel {
         label.setBounds(new Rectangle(300, 12, 67, 16));
         gracz.getPlansza().setBounds(new Rectangle(0, 0, 702, 302));
    //     gracz1.getPlansza().setBounds(new Rectangle(400, 0, 702, 702));
-        bt.setBounds(new Rectangle(100, 550, 132, 50));
-        bt2.setBounds(new Rectangle(100, 625, 132, 50));
+        bt.setBounds(new Rectangle(287, 450, 132, 50));
+        bt2.setBounds(new Rectangle(287, 525, 132, 50));
 
 
         bt.addActionListener(new java.awt.event.ActionListener() {
@@ -123,6 +127,7 @@ public class Main extends JPanel {
                         sendMessage(ge);
                     }
                     System.out.println("Serwer pomyślnie uruchomiony!\nOczekiwanie na drugiego gracza...\n");
+                    JOptionPane.showMessageDialog(frame, "Oczekiwanie na drugiego gracza");
          //           client.getConnection().sendId(id);
                //     client.getConnection().sendMessage(33);
                     bt.setEnabled(false);
@@ -153,7 +158,7 @@ public class Main extends JPanel {
         frame.getContentPane().add(textField1);
 
 
-        frame.setSize(800, 800);
+        frame.setSize(707, 707);
         frame.setResizable(false);
         frame.setLayout(null);
 
@@ -167,13 +172,14 @@ public class Main extends JPanel {
                     if(statki_moje==0){
                     clientStarted=false;
                     client.getConnection().sendMessage(Events.CLIENT_LOOSE);
+                    JOptionPane.showMessageDialog(frame, "Koniec gry - PORAŻKA");
 
                     }
                 } else if (clientStarted && client != null) {
                     client.stop();
                     client = null;
                     System.out.println("Koniec gry");
-                    JOptionPane.showMessageDialog(frame, "Koniec gry");
+                    JOptionPane.showMessageDialog(frame, "Nastąpiło niespodziewane rozłączenie z serwerem");
                     frame.dispose();
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {

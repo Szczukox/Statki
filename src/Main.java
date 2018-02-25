@@ -14,7 +14,7 @@ public class Main extends JPanel {
     private int strzał_x;
     private int strzał_y;
     int statki_moje=5;
-    int statki_przeciwnika;
+    int statki_przeciwnika=5;
 
     private JFrame frame;
 
@@ -156,11 +156,31 @@ public class Main extends JPanel {
                 if (client != null && client.isAlive()) {
          //           client.getConnection().run();
                     processMessages();
+                    if(statki_przeciwnika==-1){
+                        JOptionPane.showMessageDialog(frame, "Koniec gry - ZWYCIĘSTWO");
+                        statki_moje=5;
+                        statki_przeciwnika=5;
+                        frame.dispose();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                Main thisClass = new Main();
+                                thisClass.setVisible(true);
+                            }
+                        });
+                    }
                     if(statki_moje==0){
                     clientStarted=false;
                     client.getConnection().sendMessage(Events.CLIENT_LOOSE);
                     JOptionPane.showMessageDialog(frame, "Koniec gry - PORAŻKA");
-
+                    statki_moje=5;
+                    statki_przeciwnika=5;
+                    frame.dispose();
+                    SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                Main thisClass = new Main();
+                                thisClass.setVisible(true);
+                            }
+                        });
                     }
                 } else if (clientStarted && client != null) {
                     client.stop();
@@ -284,6 +304,9 @@ public class Main extends JPanel {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
                     gracz.getPlansza().zaznaczZatopiony(strzał_x,strzał_y,gracz.getPlansza().plansza_przeciwnika);
                     statki_przeciwnika--;
+                    if(statki_przeciwnika==0){
+                        statki_przeciwnika=-1;
+                    }
 
                     //               client.getConnection().sendMessage(115);
 

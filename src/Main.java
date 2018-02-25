@@ -175,6 +175,8 @@ public class Main extends JPanel {
          //           client.getConnection().run();
                     processMessages();
                     if(statki_przeciwnika==-1){
+                        twojRuch.setVisible(false);
+                        ruchPrzeciwnika.setVisible(false);
                         JOptionPane.showMessageDialog(frame, "Koniec gry - ZWYCIĘSTWO");
                         statki_moje=5;
                         statki_przeciwnika=5;
@@ -189,6 +191,8 @@ public class Main extends JPanel {
                     if(statki_moje==0){
                     clientStarted=false;
                     client.getConnection().sendMessage(Events.CLIENT_LOOSE);
+                    twojRuch.setVisible(false);
+                    ruchPrzeciwnika.setVisible(false);
                     JOptionPane.showMessageDialog(frame, "Koniec gry - PORAŻKA");
                     statki_moje=5;
                     statki_przeciwnika=5;

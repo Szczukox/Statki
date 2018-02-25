@@ -326,19 +326,19 @@ public class Plansza extends JPanel {
         for (int i = 0; i < plansza.length; i++) {
             for (int j = 0; j < plansza[i].length; j++) {
                 if (plansza[i][j] == Pole.POLE_PUSTE) {
-                    g2.setColor(new Color(200, 200, 200));
+                    g2.setColor(new Color(255, 255, 255));
                 }
                 if (plansza[i][j] == Pole.PUDLO) {
-                    g2.setColor(new Color(142, 169, 200));
+                    g2.setColor(new Color(255, 255, 0));
                 }
                 if (plansza[i][j] == Pole.STATEK) {
-                    g2.setColor(new Color(200, 195, 130));
+                    g2.setColor(new Color(0, 0, 255));
                 }
                 if (plansza[i][j] == Pole.STATEK_TRAFIONY) {
-                    g2.setColor(new Color(200, 56, 50));
+                    g2.setColor(new Color(255, 0, 0));
                 }
                 if (plansza[i][j] == Pole.STATEK_ZATOPIONY) {
-                    g2.setColor(new Color(81, 18, 0));
+                    g2.setColor(new Color(0, 0, 0));
                 }
 
                 g2.fillRect(2 + 30 * i, 2 + 30 * j, 28, 28);
@@ -351,19 +351,19 @@ public class Plansza extends JPanel {
         for (int i = 0; i < plansza_przeciwnika.length; i++) {
             for (int j = 0; j < plansza_przeciwnika[i].length; j++) {
                 if (plansza_przeciwnika[i][j] == Pole.POLE_PUSTE) {
-                    g2.setColor(new Color(200, 200, 200));
+                    g2.setColor(new Color(255, 255, 255));
                 }
                 if (plansza_przeciwnika[i][j] == Pole.PUDLO) {
-                    g2.setColor(new Color(142, 169, 200));
+                    g2.setColor(new Color(255, 255, 0));
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK) {
-                    g2.setColor(new Color(200, 195, 130));
+                    g2.setColor(new Color(0, 0, 255));
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_TRAFIONY) {
-                    g2.setColor(new Color(200, 56, 50));
+                    g2.setColor(new Color(255, 0, 0));
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_ZATOPIONY) {
-                    g2.setColor(new Color(81, 18, 0));
+                    g2.setColor(new Color(0, 0, 0));
                 }
 
                 g2.fillRect(402 + 30 * i, 2 + 30 * j, 28, 28);

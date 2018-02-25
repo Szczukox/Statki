@@ -18,6 +18,9 @@ public class Main extends JPanel {
 
     private JFrame frame;
 
+    JLabel twojRuch;
+    JLabel ruchPrzeciwnika;
+
     public int getStrzał_x() {
         return strzał_x;
     }
@@ -63,6 +66,15 @@ public class Main extends JPanel {
         JButton bt2 = new JButton("Wyjdź");
         JLabel label = new JLabel();
 
+        JLabel twojRuch = new JLabel("Twój ruch!");
+        JLabel ruchPrzeciwnika = new JLabel("Ruch przeciwnika!");
+
+        this.twojRuch = twojRuch;
+        this.ruchPrzeciwnika = ruchPrzeciwnika;
+
+        twojRuch.setVisible(false);
+        ruchPrzeciwnika.setVisible(false);
+
 
 
         label.setText("Wybierz ustawienie statków");
@@ -98,6 +110,9 @@ public class Main extends JPanel {
    //     gracz1.getPlansza().setBounds(new Rectangle(400, 0, 702, 702));
         bt.setBounds(new Rectangle(287, 450, 132, 50));
         bt2.setBounds(new Rectangle(287, 525, 132, 50));
+
+        twojRuch.setBounds(new Rectangle(100, 350, 200, 50));
+        ruchPrzeciwnika.setBounds(new Rectangle(503, 350, 200, 50));
 
 
         bt.addActionListener(new java.awt.event.ActionListener() {
@@ -143,6 +158,9 @@ public class Main extends JPanel {
         frame.getContentPane().add(label);
         frame.getContentPane().add(textField);
         frame.getContentPane().add(textField1);
+
+        frame.getContentPane().add(twojRuch);
+        frame.getContentPane().add(ruchPrzeciwnika);
 
 
         frame.setSize(707, 707);
@@ -216,6 +234,8 @@ public class Main extends JPanel {
                     break;
                 case Events.CLIENT_CAN_SHOOT:
                     Main.getInstance().token=true;
+                    twojRuch.setVisible(true);
+                    ruchPrzeciwnika.setVisible(false);
                     break;
                 case Events.CLIENT_LOOSE:
                     System.out.println("To juz jest koniec");
@@ -280,28 +300,38 @@ public class Main extends JPanel {
                     System.out.println(strzał_y);
                 if(events.getType()==101) {
                     gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.PUDLO;
+                    twojRuch.setVisible(false);
+                    ruchPrzeciwnika.setVisible(true);
              //       client.getConnection().sendMessage(111);
 
 
                 }
                     else if(events.getType()==102) {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.PUDLO;
+                        twojRuch.setVisible(false);
+                        ruchPrzeciwnika.setVisible(true);
                //         client.getConnection().sendMessage(112);
 
                     }
                     else if(events.getType()==103) {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
+                        twojRuch.setVisible(false);
+                        ruchPrzeciwnika.setVisible(true);
            //             client.getConnection().sendMessage(113);
 
                     }
                     else if(events.getType()==104) {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
+                        twojRuch.setVisible(false);
+                        ruchPrzeciwnika.setVisible(true);
            //             client.getConnection().sendMessage(114);
 
                     }
                     else if(events.getType()==105) {
 
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
+                        twojRuch.setVisible(false);
+                        ruchPrzeciwnika.setVisible(true);
                     gracz.getPlansza().zaznaczZatopiony(strzał_x,strzał_y,gracz.getPlansza().plansza_przeciwnika);
                     statki_przeciwnika--;
                     if(statki_przeciwnika==0){

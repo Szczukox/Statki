@@ -21,7 +21,7 @@
 pthread_mutex_t example_mutex;
 pthread_cond_t count_threshold_cv;
 
-pthread_mutex_t game_mutex;
+pthread_mutex_t bufer1_mutex;
 pthread_cond_t game_cond;
 int count=0;
 std::vector<int> clients;
@@ -69,7 +69,7 @@ void *ThreadBehavior(void *t_data)
     pthread_mutex_unlock(&example_mutex);
 
 
-    pthread_mutex_init(&game_mutex, NULL);
+    pthread_mutex_init(&bufer1_mutex, NULL);
     pthread_cond_init (&game_cond, NULL);
 
     while(1) {
@@ -77,106 +77,97 @@ void *ThreadBehavior(void *t_data)
 //////////////////////////////////////////////////////////////////////////////////
         for (unsigned int i = 0; i < clients.size() ; i+=2) {
             if (clients.at(i) == (*th_data).connect) {
-                if (clients.at(i) == (*th_data).connect) {
-                    sprintf(buf, "%d\n", 1003);
-                    ///pozwol strzelac
-                    write((*th_data).connect, buf, strlen(buf));
-                    fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i));
-
-                }
+                sprintf(buf, "%d\n", 1003);
+                ///pozwol strzelac
+                write((*th_data).connect, buf, strlen(buf));
+                fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i));
 		
-		pthread_mutex_lock(&game_mutex);
+		pthread_mutex_lock(&bufer1_mutex);
 
                 int buffer1 = 0;
 
-		pthread_mutex_unlock(&game_mutex);
+		pthread_mutex_unlock(&bufer1_mutex);
 
-                if (clients.at(i) == (*th_data).connect) {
-
-                    ///odczyt strzalu
-                    read((*th_data).connect, &buffer1, sizeof(buffer1));
-			if(buffer1==1005) {
-				fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
-			} else {
-                    		fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i), buffer1);
-			}
-                }
+                ///odczyt strzalu
+                read((*th_data).connect, &buffer1, sizeof(buffer1));
+		if(buffer1==1005) {
+			fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
+		} else {
+                    	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i), buffer1);
+		}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-                if (clients.at(i) == (*th_data).connect) {
+                sprintf(buf, "%d\n", buffer1);
+                ///wyslij wspolrzedne do przeciwnika
+                write(clients.at(i+1), buf, strlen(buf));
+                if(buffer1==1005) {
+                    pthread_exit(NULL);
+		}
 
-                    sprintf(buf, "%d\n", buffer1);
-                    ///wyslij wspolrzedne do przeciwnika
-                    write(clients.at(i+1), buf, strlen(buf));
-                    if(buffer1==1005) {
-                        pthread_exit(NULL);
-			}
-
-                    ///czy trafiles
-                    read(clients.at(i+1), &buffer1, sizeof(buffer1));
+                ///czy trafiles
+                read(clients.at(i+1), &buffer1, sizeof(buffer1));
 			
-			if(buffer1==101||buffer1==102) {
-                    		fprintf(stdout, "Klient %d spudlowal\n", clients.at(i));
-			}else if(buffer1==103||buffer1==104) {
-				fprintf(stdout, "Klient %d trafil w czesc statku\n", clients.at(i));
-			}else {
-				fprintf(stdout, "Klient %d zatopil statek\n", clients.at(i));
-			}
+		if(buffer1==101||buffer1==102) {
+                    	fprintf(stdout, "Klient %d spudlowal\n", clients.at(i));
+		}else if(buffer1==103||buffer1==104) {
+			fprintf(stdout, "Klient %d trafil w czesc statku\n", clients.at(i));
+		}else {
+			fprintf(stdout, "Klient %d zatopil statek\n", clients.at(i));
+		}
 
-                    sprintf(buf, "%d\n", buffer1);
-                    ///czy trafiles
-                    write(clients.at(i), buf, strlen(buf));
-                    if(buffer1==1005 || buffer1==0) {
-                        pthread_exit(NULL);
-			}
+                sprintf(buf, "%d\n", buffer1);
+                ///czy trafiles
+                write(clients.at(i), buf, strlen(buf));
+                if(buffer1==1005 || buffer1==0) {
+                	pthread_exit(NULL);
+		}
 
-                    sprintf(buf, "%d\n", 1003);
-                    ///pozwol strzelac
-                    write(clients.at(i+1), buf, strlen(buf));
-                    if(buffer1==1005) {
-                        pthread_exit(NULL);
-			}
-                    fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i+1));
+                sprintf(buf, "%d\n", 1003);
+                ///pozwol strzelac
+                write(clients.at(i+1), buf, strlen(buf));
+                if(buffer1==1005) {
+                    pthread_exit(NULL);
+		}
+                fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i+1));
 
-                    ///odczyt strzalu
-                    read(clients.at(i+1), &buffer1, sizeof(buffer1));
-			if(buffer1==1005) {
-				fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i));
-			} else {
-                    		fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+1), buffer1);
-			}
-                    if(buffer1==1005) {
-                        pthread_exit(NULL);
-			}
+                ///odczyt strzalu
+                read(clients.at(i+1), &buffer1, sizeof(buffer1));
+		if(buffer1==1005) {
+			fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i));
+		} else {
+                    	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+1), buffer1);
+		}
 
-                    sprintf(buf, "%d\n", buffer1);
-                    ///wyslij wspolrzedne do przeciwnika
-                    write(clients.at(i), buf, strlen(buf));
-                    if(buffer1==1005) {
-                        pthread_exit(NULL);
-			}
-                    ///czy trafiles
-                    read(clients.at(i), &buffer1, sizeof(buffer1));
-                    if(buffer1==1005 || buffer1==0) {
-                        pthread_exit(NULL);
-			}
-                    	if(buffer1==101||buffer1==102) {
-                    		fprintf(stdout, "Klient %d spudlowal\n", clients.at(i+1));
-			}else if(buffer1==103||buffer1==104) {
-				fprintf(stdout, "Klient %d trafil w czesc statku\n", clients.at(i+1));
-			}else {
-				fprintf(stdout, "Klient %d zatopil statek\n", clients.at(i+1));
-			}
+                if(buffer1==1005) {
+                    pthread_exit(NULL);
+		}
 
-                    sprintf(buf, "%d\n", buffer1);
-                    ///czy trafiles
-                    write(clients.at(i+1), buf, strlen(buf));
-                    if(buffer1==1005) {
-                        pthread_exit(NULL);
-			}
+                sprintf(buf, "%d\n", buffer1);
+                ///wyslij wspolrzedne do przeciwnika
+                write(clients.at(i), buf, strlen(buf));
+                if(buffer1==1005) {
+                    pthread_exit(NULL);
+		}
+                ///czy trafiles
+                read(clients.at(i), &buffer1, sizeof(buffer1));
+                if(buffer1==1005 || buffer1==0) {
+                    pthread_exit(NULL);
+		}
+                if(buffer1==101||buffer1==102) {
+                    	fprintf(stdout, "Klient %d spudlowal\n", clients.at(i+1));
+		}else if(buffer1==103||buffer1==104) {
+			fprintf(stdout, "Klient %d trafil w czesc statku\n", clients.at(i+1));
+		}else {
+			fprintf(stdout, "Klient %d zatopil statek\n", clients.at(i+1));
+		}
 
-                }
+                sprintf(buf, "%d\n", buffer1);
+                ///czy trafiles
+                write(clients.at(i+1), buf, strlen(buf));
+                if(buffer1==1005) {
+                    pthread_exit(NULL);
+		}
             }
         }
 }

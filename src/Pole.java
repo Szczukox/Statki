@@ -4,4 +4,5 @@ public enum Pole {
     STATEK,
     STATEK_TRAFIONY,
     STATEK_ZATOPIONY,
+    STRZAL_PROPOZYCJA
 }

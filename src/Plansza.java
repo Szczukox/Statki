@@ -341,6 +341,7 @@ public class Plansza extends JPanel {
                     g2.setColor(new Color(0, 0, 0));
                 }
 
+
                 g2.fillRect(2 + 30 * i, 2 + 30 * j, 28, 28);
 
             }
@@ -364,6 +365,10 @@ public class Plansza extends JPanel {
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_ZATOPIONY) {
                     g2.setColor(new Color(0, 0, 0));
+                }
+                if (plansza_przeciwnika[i][j] == Pole.STRZAL_PROPOZYCJA) {
+                    System.out.println("Pomalowalem");
+                    g2.setColor(new Color(0, 128, 0));
                 }
 
                 g2.fillRect(402 + 30 * i, 2 + 30 * j, 28, 28);

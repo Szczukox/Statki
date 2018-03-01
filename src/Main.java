@@ -15,6 +15,7 @@ public class Main extends JPanel {
     private int strzał_y;
     int statki_moje=5;
     int statki_przeciwnika=5;
+    int propozycja = 0;
 
     private JFrame frame;
 
@@ -87,12 +88,14 @@ public class Main extends JPanel {
         textField.setLocation(new Point(287,350));
         textField.setSize(new Dimension(132, 20));
         textField.setText("127.0.0.1");
+        textField.setVisible(false);
 
         JTextField textField1 = new JTextField();
         textField1.setVisible(true);
         textField1.setLocation(new Point(287,400));
         textField1.setSize(new Dimension(132, 20));
         textField1.setText("3490");
+        textField1.setVisible(false);
 
         textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -348,6 +351,23 @@ public class Main extends JPanel {
 
                     gracz.getPlansza().repaint();
                     System.out.println(gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y]);
+                }
+                if(events.getType()>=10000) {
+                    int number1;
+                    int number2;
+                    number1 = propozycja % 10;
+                    number2 = propozycja / 10;
+                    if (gracz.getPlansza().plansza_przeciwnika[number1][number2] == Pole.STRZAL_PROPOZYCJA){
+                        gracz.getPlansza().plansza_przeciwnika[number1][number2] = Pole.POLE_PUSTE;
+                    }
+
+                    propozycja = events.getType() - 10000;
+                    number1 = propozycja % 10;
+                    number2 = propozycja / 10;
+                    gracz.getPlansza().plansza_przeciwnika[number1][number2] = Pole.STRZAL_PROPOZYCJA;
+                    System.out.println(number1 + "totototoototototot" + number2);
+                    System.out.println("gfdgdfgfdgdfgdffdgdfgfdgfd" + gracz.getPlansza().plansza_przeciwnika[number1][number2]);
+                    gracz.getPlansza().repaint();
                 }
             }
         }

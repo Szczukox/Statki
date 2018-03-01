@@ -15,7 +15,7 @@
 
 
 #define SERVER_PORT 3490
-#define QUEUE_SIZE 4
+#define QUEUE_SIZE 8
 #define BUFOR_SIZE 100
 
 pthread_mutex_t example_mutex;
@@ -48,10 +48,10 @@ void *ThreadBehavior(void *t_data)
     read((*th_data).connect, &buffer, sizeof(buffer));
 
 
-    if(count%2==0){
+    if(count%4==0){
         pthread_cond_signal(&count_threshold_cv);
-	//pthread_cond_signal(&count_threshold_cv);
-	//pthread_cond_signal(&count_threshold_cv);
+	pthread_cond_signal(&count_threshold_cv);
+	pthread_cond_signal(&count_threshold_cv);
 
     }
     else{
@@ -75,25 +75,64 @@ void *ThreadBehavior(void *t_data)
     while(1) {
 
 //////////////////////////////////////////////////////////////////////////////////
-        for (unsigned int i = 0; i < clients.size() ; i+=2) {
+        for (unsigned int i = 0; i < clients.size() ; i+=4) {
             if (clients.at(i) == (*th_data).connect) {
-                sprintf(buf, "%d\n", 1003);
-                ///pozwol strzelac
-                write((*th_data).connect, buf, strlen(buf));
-                fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i));
-		
+		int strzal1;
+		int strzal2;
+
+		//int propozycja1;
+		//int propozycja2;
+			
 		pthread_mutex_lock(&bufer1_mutex);
 
-                int buffer1 = 0;
+		int buffer1 = 0;
 
 		pthread_mutex_unlock(&bufer1_mutex);
 
-                ///odczyt strzalu
-                read((*th_data).connect, &buffer1, sizeof(buffer1));
-		if(buffer1==1005) {
-			fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
-		} else {
-                    	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i), buffer1);
+		while(1) {
+			//PIERWSZY
+		        sprintf(buf, "%d\n", 1003);
+		        ///pozwol strzelac
+		        write((*th_data).connect, buf, strlen(buf));
+		        fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i));
+
+		        ///odczyt strzalu
+		        read((*th_data).connect, &buffer1, sizeof(buffer1));
+			strzal1 = buffer1;
+			if(buffer1==1005) {
+				fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
+				break;
+			} else {
+		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i), buffer1);
+			}
+			//propozycja1 = strzal1 + 10000;
+			//fprintf(stdout, "%d\n", propozycja1);
+		        //sprintf(buf, "%d\n", propozycja1);
+			//write(clients.at(i+2), &buf, strlen(buf));
+
+
+			//DRUGI
+		        sprintf(buf, "%d\n", 1003);
+		        ///pozwol strzelac
+		        write(clients.at(i+2), buf, strlen(buf));
+		        fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i+2));
+
+		        ///odczyt strzalu
+		        read(clients.at(i+2), &buffer1, sizeof(buffer1));
+			strzal2 = buffer1;
+			if(buffer1==1005) {
+				fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
+				break;
+			} else {
+		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+2), buffer1);
+			}
+			//propozycja2 = strzal2 + 10000;
+		        //sprintf(buf, "%d\n", propozycja2);
+			//write(clients.at(i), &buf, strlen(buf));
+
+			if (strzal1 == strzal2) {
+				break;
+			}
 		}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,13 +140,15 @@ void *ThreadBehavior(void *t_data)
                 sprintf(buf, "%d\n", buffer1);
                 ///wyslij wspolrzedne do przeciwnika
                 write(clients.at(i+1), buf, strlen(buf));
+		write(clients.at(i+3), buf, strlen(buf));
                 if(buffer1==1005) {
                     pthread_exit(NULL);
 		}
 
                 ///czy trafiles
                 read(clients.at(i+1), &buffer1, sizeof(buffer1));
-			
+		read(clients.at(i+3), &buffer1, sizeof(buffer1));
+	
 		if(buffer1==101||buffer1==102) {
                     	fprintf(stdout, "Klient %d spudlowal\n", clients.at(i));
 		}else if(buffer1==103||buffer1==104) {
@@ -119,38 +160,70 @@ void *ThreadBehavior(void *t_data)
                 sprintf(buf, "%d\n", buffer1);
                 ///czy trafiles
                 write(clients.at(i), buf, strlen(buf));
+		write(clients.at(i+2), buf, strlen(buf));
                 if(buffer1==1005 || buffer1==0) {
                 	pthread_exit(NULL);
 		}
 
-                sprintf(buf, "%d\n", 1003);
-                ///pozwol strzelac
-                write(clients.at(i+1), buf, strlen(buf));
-                if(buffer1==1005) {
-                    pthread_exit(NULL);
-		}
-                fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i+1));
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		while (1) {       
+			//PIERWSZY         
+			sprintf(buf, "%d\n", 1003);
+		        ///pozwol strzelac
+		        write(clients.at(i+1), buf, strlen(buf));
+		        if(buffer1==1005) {
+		            pthread_exit(NULL);
+			}
+		        fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i+1));
 
-                ///odczyt strzalu
-                read(clients.at(i+1), &buffer1, sizeof(buffer1));
-		if(buffer1==1005) {
-			fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i));
-		} else {
-                    	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+1), buffer1);
-		}
+		        ///odczyt strzalu
+		        read(clients.at(i+1), &buffer1, sizeof(buffer1));
+			strzal1 = buffer1;
+			if(buffer1==1005) {
+				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i), clients.at(i+3));
+				break;
+			} else {
+		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+1), buffer1);
+			}
+			//propozycja1 = strzal1 + 10000;
+		        //sprintf(buf, "%d\n", propozycja1);
+			//write(clients.at(i+3), &buf, strlen(buf));
 
-                if(buffer1==1005) {
-                    pthread_exit(NULL);
+			//DRUGI
+		        sprintf(buf, "%d\n", 1003);
+		        ///pozwol strzelac
+		        write(clients.at(i+3), buf, strlen(buf));
+		        fprintf(stdout, "Klient o ID %d moze strzelac\n", clients.at(i+3));
+
+		        ///odczyt strzalu
+		        read(clients.at(i+3), &buffer1, sizeof(buffer1));
+			strzal2 = buffer1;
+			if(buffer1==1005) {
+				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i), clients.at(i+3));
+				break;
+			} else {
+		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+3), buffer1);
+			}
+			//propozycja2 = strzal2 + 10000;
+		        //sprintf(buf, "%d\n", propozycja2);
+			//write(clients.at(i+1), &buf, strlen(buf));
+
+			if (strzal1 == strzal2) {
+				break;
+			}
 		}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 sprintf(buf, "%d\n", buffer1);
                 ///wyslij wspolrzedne do przeciwnika
                 write(clients.at(i), buf, strlen(buf));
+                write(clients.at(i+2), buf, strlen(buf));
                 if(buffer1==1005) {
                     pthread_exit(NULL);
 		}
                 ///czy trafiles
                 read(clients.at(i), &buffer1, sizeof(buffer1));
+                read(clients.at(i+2), &buffer1, sizeof(buffer1));
                 if(buffer1==1005 || buffer1==0) {
                     pthread_exit(NULL);
 		}
@@ -165,6 +238,7 @@ void *ThreadBehavior(void *t_data)
                 sprintf(buf, "%d\n", buffer1);
                 ///czy trafiles
                 write(clients.at(i+1), buf, strlen(buf));
+                write(clients.at(i+3), buf, strlen(buf));
                 if(buffer1==1005) {
                     pthread_exit(NULL);
 		}

@@ -80,8 +80,8 @@ void *ThreadBehavior(void *t_data)
 		int strzal1;
 		int strzal2;
 
-		//int propozycja1;
-		//int propozycja2;
+		int propozycja1;
+		int propozycja2;
 			
 		pthread_mutex_lock(&bufer1_mutex);
 
@@ -105,10 +105,9 @@ void *ThreadBehavior(void *t_data)
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i), buffer1);
 			}
-			//propozycja1 = strzal1 + 10000;
-			//fprintf(stdout, "%d\n", propozycja1);
-		        //sprintf(buf, "%d\n", propozycja1);
-			//write(clients.at(i+2), &buf, strlen(buf));
+			propozycja1 = strzal1 + 10000;
+		        sprintf(buf, "%d\n", propozycja1);
+			write(clients.at(i+2), &buf, strlen(buf));
 
 
 			//DRUGI
@@ -126,9 +125,9 @@ void *ThreadBehavior(void *t_data)
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+2), buffer1);
 			}
-			//propozycja2 = strzal2 + 10000;
-		        //sprintf(buf, "%d\n", propozycja2);
-			//write(clients.at(i), &buf, strlen(buf));
+			propozycja2 = strzal2 + 10000;
+		        sprintf(buf, "%d\n", propozycja2);
+			write(clients.at(i), &buf, strlen(buf));
 
 			if (strzal1 == strzal2) {
 				break;
@@ -185,9 +184,9 @@ void *ThreadBehavior(void *t_data)
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+1), buffer1);
 			}
-			//propozycja1 = strzal1 + 10000;
-		        //sprintf(buf, "%d\n", propozycja1);
-			//write(clients.at(i+3), &buf, strlen(buf));
+			propozycja1 = strzal1 + 10000;
+		        sprintf(buf, "%d\n", propozycja1);
+			write(clients.at(i+3), &buf, strlen(buf));
 
 			//DRUGI
 		        sprintf(buf, "%d\n", 1003);
@@ -204,9 +203,9 @@ void *ThreadBehavior(void *t_data)
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+3), buffer1);
 			}
-			//propozycja2 = strzal2 + 10000;
-		        //sprintf(buf, "%d\n", propozycja2);
-			//write(clients.at(i+1), &buf, strlen(buf));
+			propozycja2 = strzal2 + 10000;
+		        sprintf(buf, "%d\n", propozycja2);
+			write(clients.at(i+1), &buf, strlen(buf));
 
 			if (strzal1 == strzal2) {
 				break;

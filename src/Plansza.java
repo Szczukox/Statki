@@ -1,10 +1,13 @@
-import org.omg.CORBA.PolicyError;
-import org.omg.PortableServer.POA;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Plansza extends JPanel {
@@ -16,6 +19,14 @@ public class Plansza extends JPanel {
     private boolean gotowy;
     public int x;
     public int y;
+
+    BufferedImage pusteImage;
+    BufferedImage pudloImage;
+    BufferedImage statekImage;
+    BufferedImage trafionyImage;
+    BufferedImage zatopionyImage;
+    BufferedImage propozycjaImage;
+    BufferedImage backgroundImage;
 
     public int getId_gracza() {
         return id_gracza;
@@ -39,6 +50,16 @@ public class Plansza extends JPanel {
         this.gotowy=false;
         this.ustawione=false;
 
+        try {
+            pusteImage = ImageIO.read(new File("puste.png"));
+            pudloImage = ImageIO.read(new File("pudlo.png"));
+            statekImage = ImageIO.read(new File("statek.png"));
+            trafionyImage = ImageIO.read(new File("trafiony.png"));
+            zatopionyImage = ImageIO.read(new File("zatopiony.png"));
+            zatopionyImage = ImageIO.read(new File("propozycja.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Statek statek1 = new Statek(1);
         Statek statek2 = new Statek(2);
@@ -59,17 +80,15 @@ public class Plansza extends JPanel {
             public void mousePressed(MouseEvent e) {
                 Point p = e.getPoint();
 
-                if (p.x <= 300 && p.y <= 300  && !gotowy) {
-                    x = p.x / 30;
-                    y = p.y / 30;
+                if (p.x <= 500 && p.y <= 500  && !gotowy) {
+                    x = p.x / 50;
+                    y = p.y / 50;
                     ustaw_statki(x,y,e);
                 }
-                if(p.x >=400 && p.x<=700 && p.y<=300 && gotowy && Main.getInstance().isToken()==true){
-                    x=(p.x-400)/30;
-                    y=p.y/30;
-                    System.out.println("aaale strzaaal");
-                 //   plansza_przeciwnika[x][y] = Pole.PUDLO;
-                 //   repaint();
+                if(p.x >=600 && p.x<=1100 && p.y<=500 && gotowy && Main.getInstance().isToken()==true){
+                    x=(p.x-600)/50;
+                    y=p.y/50;
+                    System.out.println("aaale strzaaal");;
                     Events event = new Events(Events.CLIENT_SHOT);
                     event.setMessage(x + "" + y);
                     Main.getInstance().client.setMessage(Integer.parseInt(y+""+x));
@@ -77,16 +96,6 @@ public class Plansza extends JPanel {
                     Main.getInstance().setStrzał_x(x);
                     Main.getInstance().setStrzał_y(y);
                 }
-
-           /*     if (!gotowy) {
-                    ustaw_statki(x,y,e);
-                }
-                if(gotowy){
-                    System.out.println("aaale strzaaal");
-                    plansza_przeciwnika[x][y] = Pole.PUDLO;
-                    repaint();
-                }
-*/
             }
         });
 
@@ -321,57 +330,78 @@ public class Plansza extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
+        try {
+            backgroundImage = ImageIO.read(new File("space_background.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        AffineTransform affineTransform = new AffineTransform();
+        affineTransform.rotate(0, 6, 6);
+        AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
+        g2.drawImage(op.filter(backgroundImage, null), 0, 0, this);
+
         g2.setColor(Color.black);
-        g2.fillRect(0, 0, 302, 302);
+        g2.fillRect(0, 0, 502, 502);
         for (int i = 0; i < plansza.length; i++) {
             for (int j = 0; j < plansza[i].length; j++) {
                 if (plansza[i][j] == Pole.POLE_PUSTE) {
-                    g2.setColor(new Color(255, 255, 255));
+                    //g2.setColor(new Color(255, 255, 255));
+                    //g2.fillRect(2 + 50 * i, 2 + 50 * j, 48, 48);
+                    g2.drawImage(op.filter(pusteImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.PUDLO) {
-                    g2.setColor(new Color(255, 255, 0));
+                    //g2.setColor(new Color(255, 255, 0));
+                    g2.drawImage(op.filter(pudloImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.STATEK) {
-                    g2.setColor(new Color(0, 0, 255));
+                    //g2.setColor(new Color(0, 0, 255));
+                    g2.drawImage(op.filter(statekImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.STATEK_TRAFIONY) {
-                    g2.setColor(new Color(255, 0, 0));
+                    //g2.setColor(new Color(255, 0, 0));
+                    g2.drawImage(op.filter(trafionyImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.STATEK_ZATOPIONY) {
-                    g2.setColor(new Color(0, 0, 0));
+                    //g2.setColor(new Color(0, 0, 0));
+                    g2.drawImage(op.filter(zatopionyImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
 
 
-                g2.fillRect(2 + 30 * i, 2 + 30 * j, 28, 28);
+                //g2.fillRect(2 + 30 * i, 2 + 30 * j, 28, 28);
 
             }
         }
 
         g2.setColor(Color.black);
-        g2.fillRect(400, 0, 702, 302);
+        g2.fillRect(600, 0, 1102, 502);
         for (int i = 0; i < plansza_przeciwnika.length; i++) {
             for (int j = 0; j < plansza_przeciwnika[i].length; j++) {
                 if (plansza_przeciwnika[i][j] == Pole.POLE_PUSTE) {
-                    g2.setColor(new Color(255, 255, 255));
+                    //g2.setColor(new Color(255, 255, 255));
+                    g2.drawImage(op.filter(pusteImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.PUDLO) {
-                    g2.setColor(new Color(255, 255, 0));
+                    //g2.setColor(new Color(255, 255, 0));
+                    g2.drawImage(op.filter(pudloImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK) {
-                    g2.setColor(new Color(0, 0, 255));
+                    //g2.setColor(new Color(0, 0, 255));
+                    g2.drawImage(op.filter(statekImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_TRAFIONY) {
-                    g2.setColor(new Color(255, 0, 0));
+                    //g2.setColor(new Color(255, 0, 0));
+                    g2.drawImage(op.filter(trafionyImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_ZATOPIONY) {
-                    g2.setColor(new Color(0, 0, 0));
+                    //g2.setColor(new Color(0, 0, 0));
+                    g2.drawImage(op.filter(zatopionyImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STRZAL_PROPOZYCJA) {
-                    System.out.println("Pomalowalem");
-                    g2.setColor(new Color(0, 128, 0));
+                    //g2.setColor(new Color(0, 128, 0));
+                    g2.drawImage(op.filter(propozycjaImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
 
-                g2.fillRect(402 + 30 * i, 2 + 30 * j, 28, 28);
+                //g2.fillRect(602 + 50 * i, 2 + 50 * j, 48, 48);
 
             }
         }

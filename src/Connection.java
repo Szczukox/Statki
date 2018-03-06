@@ -1,5 +1,3 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -10,7 +8,6 @@ public class Connection extends Thread {
     private Socket socket;
     private BufferedReader in;
 
-  //  private PrintWriter out;
     private DataOutputStream out;
 
     public LinkedList<String> messagesQueue;
@@ -19,7 +16,6 @@ public class Connection extends Thread {
         try {
             in = new BufferedReader(new InputStreamReader(socket
                     .getInputStream()));
-            //out = new PrintWriter(socket.getOutputStream(), true);
             out = new DataOutputStream(socket.getOutputStream());
         } catch (IOException ex) {
         }

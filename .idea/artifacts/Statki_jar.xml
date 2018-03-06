@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Statki:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Statki_jar</output-path>
+    <root id="archive" name="Statki.jar">
+      <element id="module-output" name="Statki" />
+    </root>
+  </artifact>
+</component>

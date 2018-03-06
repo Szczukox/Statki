@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Statek {
     private int size;
     private boolean czy_ustawiony;

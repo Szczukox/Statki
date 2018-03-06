@@ -1,11 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 
 public class Main extends JPanel {
 
-    private BufferedImage img;
     boolean clientStarted = false;
     Client client;
     private boolean token = false;
@@ -62,10 +60,13 @@ public class Main extends JPanel {
         this.frame = frame;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-   //     Gracz gracz1 = new Gracz(1);
+        frame.setBackground(Color.black);
+
         JButton bt = new JButton("Graj");
         JButton bt2 = new JButton("Wyjdź");
         JLabel label = new JLabel();
+        label.setIcon(new javax.swing.ImageIcon("space_background.png"));
+        label.setBounds(0, 0, 800, 600);
 
         JLabel twojRuch = new JLabel("Twój ruch!");
         JLabel ruchPrzeciwnika = new JLabel("Ruch przeciwnika!");
@@ -76,22 +77,14 @@ public class Main extends JPanel {
         twojRuch.setVisible(false);
         ruchPrzeciwnika.setVisible(false);
 
-
-
-        label.setText("Wybierz ustawienie statków");
-
-        label.setHorizontalAlignment(SwingConstants.RIGHT);
-
         JTextField textField = new JTextField();
 
-        textField.setVisible(true);
         textField.setLocation(new Point(287,350));
         textField.setSize(new Dimension(132, 20));
         textField.setText("127.0.0.1");
         textField.setVisible(false);
 
         JTextField textField1 = new JTextField();
-        textField1.setVisible(true);
         textField1.setLocation(new Point(287,400));
         textField1.setSize(new Dimension(132, 20));
         textField1.setText("3490");
@@ -109,20 +102,18 @@ public class Main extends JPanel {
         });
 
         label.setBounds(new Rectangle(300, 12, 67, 16));
-        gracz.getPlansza().setBounds(new Rectangle(0, 0, 702, 302));
-   //     gracz1.getPlansza().setBounds(new Rectangle(400, 0, 702, 702));
-        bt.setBounds(new Rectangle(287, 450, 132, 50));
-        bt2.setBounds(new Rectangle(287, 525, 132, 50));
+        gracz.getPlansza().setBounds(new Rectangle(0, 0, 1102, 502));
+        bt.setBounds(new Rectangle(487, 550, 132, 50));
+        bt2.setBounds(new Rectangle(487, 625, 132, 50));
 
-        twojRuch.setBounds(new Rectangle(100, 350, 200, 50));
-        ruchPrzeciwnika.setBounds(new Rectangle(503, 350, 200, 50));
+        twojRuch.setBounds(new Rectangle(200, 550, 200, 50));
+        ruchPrzeciwnika.setBounds(new Rectangle(803, 550, 200, 50));
 
 
         bt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 if(gracz.getPlansza().dlugosc==5) {
                     gracz.getPlansza().setGotowy(true);
-                    //gracz1.getPlansza().setGotowy(true);
                     String id = textField.getText();
                     client = new Client();
                     client.setHost(textField.getText());
@@ -133,8 +124,6 @@ public class Main extends JPanel {
                     }
                     System.out.println("Serwer pomyślnie uruchomiony!\nOczekiwanie na drugiego gracza...\n");
                     JOptionPane.showMessageDialog(frame, "Oczekiwanie na drugiego gracza");
-         //           client.getConnection().sendId(id);
-               //     client.getConnection().sendMessage(33);
                     bt.setEnabled(false);
                     textField.setEnabled(false);
                     textField1.setEnabled(false);
@@ -153,11 +142,9 @@ public class Main extends JPanel {
         });
 
 
-
+        frame.getContentPane().add(gracz.getPlansza());
         frame.getContentPane().add(bt);
         frame.getContentPane().add(bt2);
-        frame.getContentPane().add(gracz.getPlansza());
-       // frame.getContentPane().add(gracz1.getPlansza());
         frame.getContentPane().add(label);
         frame.getContentPane().add(textField);
         frame.getContentPane().add(textField1);
@@ -166,7 +153,7 @@ public class Main extends JPanel {
         frame.getContentPane().add(ruchPrzeciwnika);
 
 
-        frame.setSize(707, 707);
+        frame.setSize(1107, 807);
         frame.setResizable(false);
         frame.setLayout(null);
 
@@ -175,7 +162,6 @@ public class Main extends JPanel {
         new Thread(() -> {
             while (true) {
                 if (client != null && client.isAlive()) {
-         //           client.getConnection().run();
                     processMessages();
                     if(statki_przeciwnika==-1){
                         twojRuch.setVisible(false);
@@ -219,7 +205,6 @@ public class Main extends JPanel {
                             thisClass.setVisible(true);
                         }
                     });
-                    //    zerwanePolaczenie();
                 }
                 try {
                     Thread.sleep(20);
@@ -261,18 +246,15 @@ public class Main extends JPanel {
                 strzał_y=number2;
                     System.out.println("jestem");
                 if(gracz.getPlansza().plansza[number1][number2]==Pole.POLE_PUSTE){
-                 //   System.out.println("101");
                     client.getConnection().sendMessage(101);
                     gracz.getPlansza().plansza[number1][number2]=Pole.PUDLO;
 
                 }
                     else if(gracz.getPlansza().plansza[number1][number2]==Pole.PUDLO){
-                //        System.out.println("102");
                         client.getConnection().sendMessage(102);
 
                     }
                     else if(gracz.getPlansza().plansza[number1][number2]==Pole.STATEK){
-               //         System.out.println("103");
                         gracz.getPlansza().plansza[number1][number2]= Pole.STATEK_TRAFIONY;
                     if(gracz.getPlansza().czyZatopiony(number1,number2)){
                         gracz.getPlansza().zaznaczZatopiony(number1,number2,gracz.getPlansza().plansza);
@@ -287,13 +269,11 @@ public class Main extends JPanel {
 
                 }
                     else if(gracz.getPlansza().plansza[number1][number2]==Pole.STATEK_TRAFIONY){
-               //         System.out.println("104");
                         client.getConnection().sendMessage(104);
 
 
                     }
                     else if(gracz.getPlansza().plansza[number1][number2]==Pole.STATEK_ZATOPIONY){
-            //           System.out.println("105");
                         client.getConnection().sendMessage(105);
 
 
@@ -308,8 +288,7 @@ public class Main extends JPanel {
                 if(events.getType()==101) {
                     gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.PUDLO;
                     twojRuch.setVisible(false);
-                    ruchPrzeciwnika.setVisible(true);
-             //       client.getConnection().sendMessage(111);
+                    ruchPrzeciwnika.setVisible(true);;
 
 
                 }
@@ -317,21 +296,18 @@ public class Main extends JPanel {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.PUDLO;
                         twojRuch.setVisible(false);
                         ruchPrzeciwnika.setVisible(true);
-               //         client.getConnection().sendMessage(112);
 
                     }
                     else if(events.getType()==103) {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
                         twojRuch.setVisible(false);
                         ruchPrzeciwnika.setVisible(true);
-           //             client.getConnection().sendMessage(113);
 
                     }
                     else if(events.getType()==104) {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
                         twojRuch.setVisible(false);
                         ruchPrzeciwnika.setVisible(true);
-           //             client.getConnection().sendMessage(114);
 
                     }
                     else if(events.getType()==105) {
@@ -339,14 +315,11 @@ public class Main extends JPanel {
                         gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.STATEK_TRAFIONY;
                         twojRuch.setVisible(false);
                         ruchPrzeciwnika.setVisible(true);
-                    gracz.getPlansza().zaznaczZatopiony(strzał_x,strzał_y,gracz.getPlansza().plansza_przeciwnika);
-                    statki_przeciwnika--;
-                    if(statki_przeciwnika==0){
-                        statki_przeciwnika=-1;
-                    }
-
-                    //               client.getConnection().sendMessage(115);
-
+                        gracz.getPlansza().zaznaczZatopiony(strzał_x,strzał_y,gracz.getPlansza().plansza_przeciwnika);
+                        statki_przeciwnika--;
+                        if(statki_przeciwnika==0){
+                            statki_przeciwnika=-1;
+                        }
                     }
 
                     gracz.getPlansza().repaint();
@@ -388,24 +361,4 @@ public class Main extends JPanel {
     public void setToken(boolean token) {
         this.token = token;
     }
-
-
-/*
-    public Main() {
-        super();
-        initialize();
-    }
-    */
-/*
-
-    private void initialize() {
-        this.setSize(694, 547);
-        this.setContentPane(getJContentPane());
-        this.setResizable(false);
-        this.setTitle("Statki");
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
-            }
-        });
-    }*/
     }

@@ -8,6 +8,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Plansza extends JPanel {
@@ -51,12 +52,20 @@ public class Plansza extends JPanel {
         this.ustawione=false;
 
         try {
-            pusteImage = ImageIO.read(new File("puste.png"));
-            pudloImage = ImageIO.read(new File("pudlo.png"));
-            statekImage = ImageIO.read(new File("statek.png"));
-            trafionyImage = ImageIO.read(new File("trafiony.png"));
-            zatopionyImage = ImageIO.read(new File("zatopiony.png"));
-            zatopionyImage = ImageIO.read(new File("propozycja.png"));
+            URL imageUrl = Plansza.class.getResource("puste.png");
+            pusteImage = ImageIO.read(imageUrl);
+            imageUrl = Plansza.class.getResource("pudlo.png");
+            pudloImage = ImageIO.read(imageUrl);
+            imageUrl = Plansza.class.getResource("statek.png");
+            statekImage = ImageIO.read(imageUrl);
+            imageUrl = Plansza.class.getResource("trafiony.png");
+            trafionyImage = ImageIO.read(imageUrl);
+            imageUrl = Plansza.class.getResource("zatopiony.png");
+            zatopionyImage = ImageIO.read(imageUrl);
+            imageUrl = Plansza.class.getResource("propozycja.png");
+            propozycjaImage = ImageIO.read(imageUrl);
+            imageUrl = Plansza.class.getResource("space_background.png");
+            backgroundImage = ImageIO.read(imageUrl);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -330,11 +339,7 @@ public class Plansza extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        try {
-            backgroundImage = ImageIO.read(new File("space_background.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         AffineTransform affineTransform = new AffineTransform();
         affineTransform.rotate(0, 6, 6);
         AffineTransformOp op = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);

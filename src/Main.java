@@ -59,14 +59,10 @@ public class Main extends JPanel {
         JFrame frame = new JFrame("Statki");
         this.frame = frame;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.setBackground(Color.black);
+        frame.setLayout(null);
 
         JButton bt = new JButton("Graj");
         JButton bt2 = new JButton("Wyjdź");
-        JLabel label = new JLabel();
-        label.setIcon(new javax.swing.ImageIcon("space_background.png"));
-        label.setBounds(0, 0, 800, 600);
 
         JLabel twojRuch = new JLabel("Twój ruch!");
         JLabel ruchPrzeciwnika = new JLabel("Ruch przeciwnika!");
@@ -101,8 +97,7 @@ public class Main extends JPanel {
             }
         });
 
-        label.setBounds(new Rectangle(300, 12, 67, 16));
-        gracz.getPlansza().setBounds(new Rectangle(0, 0, 1102, 502));
+        gracz.getPlansza().setBounds(new Rectangle(0, 0, 1102, 800));
         bt.setBounds(new Rectangle(487, 550, 132, 50));
         bt2.setBounds(new Rectangle(487, 625, 132, 50));
 
@@ -122,7 +117,6 @@ public class Main extends JPanel {
                         Events ge = new Events(Events.CLIENT_LOGIN);
                         sendMessage(ge);
                     }
-                    System.out.println("Serwer pomyślnie uruchomiony!\nOczekiwanie na drugiego gracza...\n");
                     JOptionPane.showMessageDialog(frame, "Oczekiwanie na drugiego gracza");
                     bt.setEnabled(false);
                     textField.setEnabled(false);
@@ -141,11 +135,12 @@ public class Main extends JPanel {
             }
         });
 
-
+        //frame.getContentPane().add(bt);
+        //frame.getContentPane().add(bt2);
+        frame.getContentPane().setLayout(null);
+        gracz.getPlansza().add(bt);
+        gracz.getPlansza().add(bt2);
         frame.getContentPane().add(gracz.getPlansza());
-        frame.getContentPane().add(bt);
-        frame.getContentPane().add(bt2);
-        frame.getContentPane().add(label);
         frame.getContentPane().add(textField);
         frame.getContentPane().add(textField1);
 
@@ -196,7 +191,6 @@ public class Main extends JPanel {
                 } else if (clientStarted && client != null) {
                     client.stop();
                     client = null;
-                    System.out.println("Koniec gry");
                     JOptionPane.showMessageDialog(frame, "Nastąpiło niespodziewane rozłączenie z serwerem");
                     frame.dispose();
                     SwingUtilities.invokeLater(new Runnable() {
@@ -222,7 +216,6 @@ public class Main extends JPanel {
                 && (events = client.receiveMessage()) != null) {
             switch (events.getType()) {
                 case Events.CLIENT_CONNECTED:
-                    System.out.println("NO i sie polaczyli");
                     break;
                 case Events.CLIENT_CAN_SHOOT:
                     Main.getInstance().token=true;
@@ -230,7 +223,6 @@ public class Main extends JPanel {
                     ruchPrzeciwnika.setVisible(false);
                     break;
                 case Events.CLIENT_LOOSE:
-                    System.out.println("To juz jest koniec");
                     client.stop();
                     client=null;
                     break;
@@ -244,7 +236,6 @@ public class Main extends JPanel {
                 number2=events.getType()/10;
                 strzał_x=number1;
                 strzał_y=number2;
-                    System.out.println("jestem");
                 if(gracz.getPlansza().plansza[number1][number2]==Pole.POLE_PUSTE){
                     client.getConnection().sendMessage(101);
                     gracz.getPlansza().plansza[number1][number2]=Pole.PUDLO;
@@ -338,8 +329,6 @@ public class Main extends JPanel {
                     number1 = propozycja % 10;
                     number2 = propozycja / 10;
                     gracz.getPlansza().plansza_przeciwnika[number1][number2] = Pole.STRZAL_PROPOZYCJA;
-                    System.out.println(number1 + "totototoototototot" + number2);
-                    System.out.println("gfdgdfgfdgdfgdffdgdfgfdgfd" + gracz.getPlansza().plansza_przeciwnika[number1][number2]);
                     gracz.getPlansza().repaint();
                 }
             }

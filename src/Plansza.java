@@ -51,6 +51,8 @@ public class Plansza extends JPanel {
         this.gotowy=false;
         this.ustawione=false;
 
+        setLayout(null);
+
         try {
             URL imageUrl = Plansza.class.getResource("puste.png");
             pusteImage = ImageIO.read(imageUrl);
@@ -64,7 +66,7 @@ public class Plansza extends JPanel {
             zatopionyImage = ImageIO.read(imageUrl);
             imageUrl = Plansza.class.getResource("propozycja.png");
             propozycjaImage = ImageIO.read(imageUrl);
-            imageUrl = Plansza.class.getResource("space_background.png");
+            imageUrl = Plansza.class.getResource("background.png");
             backgroundImage = ImageIO.read(imageUrl);
         } catch (IOException e) {
             e.printStackTrace();
@@ -350,30 +352,20 @@ public class Plansza extends JPanel {
         for (int i = 0; i < plansza.length; i++) {
             for (int j = 0; j < plansza[i].length; j++) {
                 if (plansza[i][j] == Pole.POLE_PUSTE) {
-                    //g2.setColor(new Color(255, 255, 255));
-                    //g2.fillRect(2 + 50 * i, 2 + 50 * j, 48, 48);
                     g2.drawImage(op.filter(pusteImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.PUDLO) {
-                    //g2.setColor(new Color(255, 255, 0));
                     g2.drawImage(op.filter(pudloImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.STATEK) {
-                    //g2.setColor(new Color(0, 0, 255));
                     g2.drawImage(op.filter(statekImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.STATEK_TRAFIONY) {
-                    //g2.setColor(new Color(255, 0, 0));
                     g2.drawImage(op.filter(trafionyImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza[i][j] == Pole.STATEK_ZATOPIONY) {
-                    //g2.setColor(new Color(0, 0, 0));
                     g2.drawImage(op.filter(zatopionyImage, null), 2 + i * 50, 2 + j * 50, this);
                 }
-
-
-                //g2.fillRect(2 + 30 * i, 2 + 30 * j, 28, 28);
-
             }
         }
 
@@ -382,37 +374,27 @@ public class Plansza extends JPanel {
         for (int i = 0; i < plansza_przeciwnika.length; i++) {
             for (int j = 0; j < plansza_przeciwnika[i].length; j++) {
                 if (plansza_przeciwnika[i][j] == Pole.POLE_PUSTE) {
-                    //g2.setColor(new Color(255, 255, 255));
                     g2.drawImage(op.filter(pusteImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.PUDLO) {
-                    //g2.setColor(new Color(255, 255, 0));
                     g2.drawImage(op.filter(pudloImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK) {
-                    //g2.setColor(new Color(0, 0, 255));
                     g2.drawImage(op.filter(statekImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_TRAFIONY) {
-                    //g2.setColor(new Color(255, 0, 0));
                     g2.drawImage(op.filter(trafionyImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STATEK_ZATOPIONY) {
-                    //g2.setColor(new Color(0, 0, 0));
                     g2.drawImage(op.filter(zatopionyImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
                 if (plansza_przeciwnika[i][j] == Pole.STRZAL_PROPOZYCJA) {
-                    //g2.setColor(new Color(0, 128, 0));
                     g2.drawImage(op.filter(propozycjaImage, null), 602 + i * 50, 2 + j * 50, this);
                 }
-
-                //g2.fillRect(602 + 50 * i, 2 + 50 * j, 48, 48);
-
             }
         }
-
-
         g.drawImage(img, 0, 0, this);
+        paintComponents(g);
     }
 
 

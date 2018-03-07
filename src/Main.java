@@ -20,17 +20,17 @@ public class Main extends JPanel {
     JLabel twojRuch;
     JLabel ruchPrzeciwnika;
 
-    public int getStrzał_x() {
+    /*public int getStrzał_x() {
         return strzał_x;
-    }
+    }*/
 
     public void setStrzał_x(int strzał_x) {
         this.strzał_x = strzał_x;
     }
 
-    public int getStrzał_y() {
+    /*public int getStrzał_y() {
         return strzał_y;
-    }
+    }*/
 
     public void setStrzał_y(int strzał_y) {
         this.strzał_y = strzał_y;
@@ -138,8 +138,6 @@ public class Main extends JPanel {
             }
         });
 
-        //frame.getContentPane().add(bt);
-        //frame.getContentPane().add(bt2);
         frame.getContentPane().setLayout(null);
         gracz.getPlansza().add(bt);
         gracz.getPlansza().add(bt2);

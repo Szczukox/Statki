@@ -1,4 +1,4 @@
-public class Statek {
+/*public class Statek {
     private int size;
     private boolean czy_ustawiony;
 
@@ -22,4 +22,4 @@ public class Statek {
     public void setCzy_ustawiony(boolean czy_ustawiony) {
         this.czy_ustawiony = czy_ustawiony;
     }
-}
+}*/

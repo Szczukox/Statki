@@ -32,7 +32,7 @@ public class Connection extends Thread {
 
        }
     }
-    public void sendId(String id) {
+    /*public void sendId(String id) {
         try {
             PrintWriter outer = new PrintWriter(socket.getOutputStream(), true);
 
@@ -40,7 +40,7 @@ public class Connection extends Thread {
         }catch (IOException ex){
 
         }
-    }
+    }*/
 
     public void run() {
         String s;
@@ -67,25 +67,25 @@ public class Connection extends Thread {
         }
     }
 
-    public BufferedReader getIn() {
+    /*public BufferedReader getIn() {
         return in;
-    }
+    }*/
 
-    public void setIn(BufferedReader in) {
+    /*public void setIn(BufferedReader in) {
         this.in = in;
-    }
+    }*/
 
 
 
-    public Socket getSocket() {
+    /*public Socket getSocket() {
         return socket;
-    }
+    }*/
 
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
 
-    int ntohl(byte[] x)
+    /*int ntohl(byte[] x)
     {
         int res = 0;
         for (int i = 0; i < 4; i++)
@@ -94,9 +94,9 @@ public class Connection extends Thread {
             res |= (int) x[i];
         }
         return res;
-    }
+    }*/
 
-    byte[] htonl(int x)
+    /*byte[] htonl(int x)
     {
         byte[] res = new byte[4];
         for (int i = 0; i < 4; i++)
@@ -105,14 +105,14 @@ public class Connection extends Thread {
             x <<= 8;
         }
         return res;
-    }
+    }*/
 
-    int htonl1(int value) {
+    /*int htonl1(int value) {
         if (ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN)) {
             return value;
         }
         return Integer.reverseBytes(value);
-    }
+    }*/
 
 
 }

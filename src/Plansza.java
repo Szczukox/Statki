@@ -33,13 +33,13 @@ public class Plansza extends JPanel {
         return id_gracza;
     }
 
-    public void setId_gracza(int id_gracza) {
+   /* public void setId_gracza(int id_gracza) {
         this.id_gracza = id_gracza;
-    }
+    }*/
 
-    public boolean isGotowy() {
+    /*public boolean isGotowy() {
         return gotowy;
-    }
+    }*/
 
     public void setGotowy(boolean gotowy) {
         this.gotowy = gotowy;
@@ -72,7 +72,7 @@ public class Plansza extends JPanel {
             e.printStackTrace();
         }
 
-        Statek statek1 = new Statek(1);
+        /*Statek statek1 = new Statek(1);
         Statek statek2 = new Statek(2);
         Statek statek3 = new Statek(3);
         Statek statek4 = new Statek(4);
@@ -83,7 +83,7 @@ public class Plansza extends JPanel {
         statki.add(statek2);
         statki.add(statek3);
         statki.add(statek4);
-        statki.add(statek5);
+        statki.add(statek5);*/
 
 
         addMouseListener(new MouseAdapter() {
@@ -244,7 +244,7 @@ public class Plansza extends JPanel {
                             }
                         }
                         if (czy_wolne == false) {
-                            czy_wolne = true;
+                            //czy_wolne = true;
                             dlugosc--;
                         }
                     }

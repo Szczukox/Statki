@@ -57,21 +57,21 @@ public class Events {
         return game_event;
     }
 
-    public String getMessage() {
+    /*public String getMessage() {
         return message;
-    }
+    }*/
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getPlayerId() {
+    /*public String getPlayerId() {
         return playerId;
-    }
+    }*/
 
-    public void setPlayerId(String id) {
+    /*public void setPlayerId(String id) {
         playerId = id;
-    }
+    }*/
 
 
 }

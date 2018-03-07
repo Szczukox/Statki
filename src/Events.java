@@ -12,6 +12,8 @@ public class Events {
     /** ZAKONCZENIE GRY */
     public static final int CLIENT_LOOSE=1005;
 
+    public static final int CLIENT_CAN_SET_SHIP=1006;
+
     private int game_event;
 
     private String playerId = "";

@@ -101,6 +101,8 @@ public class Main extends JPanel {
         bt.setBounds(new Rectangle(487, 550, 132, 50));
         bt2.setBounds(new Rectangle(487, 625, 132, 50));
 
+        twojRuch.setForeground(Color.white);
+        ruchPrzeciwnika.setForeground(Color.white);
         twojRuch.setBounds(new Rectangle(200, 550, 200, 50));
         ruchPrzeciwnika.setBounds(new Rectangle(803, 550, 200, 50));
 
@@ -109,15 +111,16 @@ public class Main extends JPanel {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 if(gracz.getPlansza().dlugosc==5) {
                     gracz.getPlansza().setGotowy(true);
-                    String id = textField.getText();
                     client = new Client();
                     client.setHost(textField.getText());
                     client.setPort(Integer.parseInt(textField1.getText()));
                     if (client.start()) {
-                        Events ge = new Events(Events.CLIENT_LOGIN);
-                        sendMessage(ge);
+                        //Events ge = new Events(Events.CLIENT_LOGIN);
+                        //sendMessage(ge);
+                        JOptionPane.showMessageDialog(frame, "Oczekiwanie na drugiego gracza");
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "ERROR");
                     }
-                    JOptionPane.showMessageDialog(frame, "Oczekiwanie na drugiego gracza");
                     bt.setEnabled(false);
                     textField.setEnabled(false);
                     textField1.setEnabled(false);
@@ -140,15 +143,13 @@ public class Main extends JPanel {
         frame.getContentPane().setLayout(null);
         gracz.getPlansza().add(bt);
         gracz.getPlansza().add(bt2);
+        gracz.getPlansza().add(twojRuch);
+        gracz.getPlansza().add(ruchPrzeciwnika);
         frame.getContentPane().add(gracz.getPlansza());
         frame.getContentPane().add(textField);
         frame.getContentPane().add(textField1);
 
-        frame.getContentPane().add(twojRuch);
-        frame.getContentPane().add(ruchPrzeciwnika);
-
-
-        frame.setSize(1107, 807);
+        frame.setSize(1100, 800);
         frame.setResizable(false);
         frame.setLayout(null);
 
@@ -226,16 +227,14 @@ public class Main extends JPanel {
                     client.stop();
                     client=null;
                     break;
-
-
                 }
                 if(events.getType()<=100){
-                int number1;
-                int number2;
-                number1=events.getType()%10;
-                number2=events.getType()/10;
-                strzał_x=number1;
-                strzał_y=number2;
+                    int number1;
+                    int number2;
+                    number1=events.getType()%10;
+                    number2=events.getType()/10;
+                    strzał_x=number1;
+                    strzał_y=number2;
                 if(gracz.getPlansza().plansza[number1][number2]==Pole.POLE_PUSTE){
                     client.getConnection().sendMessage(101);
                     gracz.getPlansza().plansza[number1][number2]=Pole.PUDLO;
@@ -251,14 +250,9 @@ public class Main extends JPanel {
                         gracz.getPlansza().zaznaczZatopiony(number1,number2,gracz.getPlansza().plansza);
                         statki_moje--;
                         client.getConnection().sendMessage(105);
-                    }else
+                    } else
                         client.getConnection().sendMessage(103);
-
-
-
-
-
-                }
+                    }
                     else if(gracz.getPlansza().plansza[number1][number2]==Pole.STATEK_TRAFIONY){
                         client.getConnection().sendMessage(104);
 
@@ -274,8 +268,6 @@ public class Main extends JPanel {
 
                 }
                 if(events.getType()>100 && events.getType()<1000){
-                    System.out.println(strzał_x);
-                    System.out.println(strzał_y);
                 if(events.getType()==101) {
                     gracz.getPlansza().plansza_przeciwnika[strzał_x][strzał_y] = Pole.PUDLO;
                     twojRuch.setVisible(false);

@@ -99,7 +99,6 @@ public class Plansza extends JPanel {
                 if(p.x >=600 && p.x<=1100 && p.y<=500 && gotowy && Main.getInstance().isToken()==true){
                     x=(p.x-600)/50;
                     y=p.y/50;
-                    System.out.println("aaale strzaaal");;
                     Events event = new Events(Events.CLIENT_SHOT);
                     event.setMessage(x + "" + y);
                     Main.getInstance().client.setMessage(Integer.parseInt(y+""+x));

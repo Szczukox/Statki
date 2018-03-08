@@ -23,6 +23,7 @@ pthread_cond_t count_threshold_cv;
 
 pthread_mutex_t bufer1_mutex;
 pthread_cond_t game_cond;
+
 int count=0;
 std::vector<int> clients;
 using namespace std;
@@ -44,9 +45,6 @@ void *ThreadBehavior(void *t_data)
 
     pthread_mutex_lock(&example_mutex);
     count++;
-    int buffer = 0;
-    read((*th_data).connect, &buffer, sizeof(buffer));
-
 
     if(count%4==0){
         pthread_cond_signal(&count_threshold_cv);
@@ -65,6 +63,7 @@ void *ThreadBehavior(void *t_data)
     clients.push_back((*th_data).connect);
 
     fprintf(stdout, "Klient o ID %d nawiazal polaczenie\n", clients.at(clients.size() - 1));
+    fprintf(stdout, "Liczba graczy: %d\n", (int) clients.size());
 
     pthread_mutex_unlock(&example_mutex);
 
@@ -77,6 +76,7 @@ void *ThreadBehavior(void *t_data)
 //////////////////////////////////////////////////////////////////////////////////
         for (unsigned int i = 0; i < clients.size() ; i+=4) {
             if (clients.at(i) == (*th_data).connect) {
+    		fprintf(stdout, "Liczba graczy: %d\n", (int) clients.size());
 		int strzal1;
 		int strzal2;
 
@@ -100,8 +100,8 @@ void *ThreadBehavior(void *t_data)
 		        read((*th_data).connect, &buffer1, sizeof(buffer1));
 			strzal1 = buffer1;
 			if(buffer1==1005) {
-				fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
-				break;
+				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i+1), clients.at(i+3));
+				pthread_exit(NULL);
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i), buffer1);
 			}
@@ -120,8 +120,8 @@ void *ThreadBehavior(void *t_data)
 		        read(clients.at(i+2), &buffer1, sizeof(buffer1));
 			strzal2 = buffer1;
 			if(buffer1==1005) {
-				fprintf(stdout, "Klient %d odnosi zwyciestwo!!!\n", clients.at(i+1));
-				break;
+				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i+1), clients.at(i+3));
+				pthread_exit(NULL);
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+2), buffer1);
 			}
@@ -179,8 +179,8 @@ void *ThreadBehavior(void *t_data)
 		        read(clients.at(i+1), &buffer1, sizeof(buffer1));
 			strzal1 = buffer1;
 			if(buffer1==1005) {
-				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i), clients.at(i+3));
-				break;
+				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i), clients.at(i+2));
+				pthread_exit(NULL);
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+1), buffer1);
 			}
@@ -198,8 +198,8 @@ void *ThreadBehavior(void *t_data)
 		        read(clients.at(i+3), &buffer1, sizeof(buffer1));
 			strzal2 = buffer1;
 			if(buffer1==1005) {
-				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i), clients.at(i+3));
-				break;
+				fprintf(stdout, "Klient %d oraz %d odnosi zwyciestwo!!!\n", clients.at(i), clients.at(i+2));
+				pthread_exit(NULL);
 			} else {
 		            	fprintf(stdout, "Klient %d wykonal strzal w pole: %d\n", clients.at(i+3), buffer1);
 			}
@@ -242,6 +242,9 @@ void *ThreadBehavior(void *t_data)
                     pthread_exit(NULL);
 		}
             }
+	    else if (clients.at(i+1) == (*th_data).connect || clients.at(i+2) == (*th_data).connect || clients.at(i+3) == (*th_data).connect) {
+	    	pthread_exit(NULL);
+	    }
         }
 }
     pthread_exit(NULL);

@@ -2,7 +2,6 @@ import java.net.Socket;
 
 public class Client {
 
-    //private int id;
     private String host;
     private int port;
     private Socket socket;
@@ -31,34 +30,13 @@ public class Client {
         return connection;
     }
 
-    /*public void setConnection(Connection connection) {
-        this.connection = connection;
-    }*/
-
-   /* public String getHost() {
-        return host;
-    }*/
-
     public void setHost(String host) {
         this.host = host;
     }
 
-    /*public int getPort() {
-        return port;
-    }*/
-
     public void setPort(int port) {
         this.port = port;
     }
-
-
-    /*public int getId() {
-        return id;
-    }*/
-
-    /*public void setId(int id) {
-        this.id = id;
-    }*/
 
     public boolean isAlive() {
         return (connection != null && connection.isAlive());

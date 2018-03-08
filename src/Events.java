@@ -16,8 +16,6 @@ public class Events {
 
     private int game_event;
 
-    private String playerId = "";
-
     private String message;
 
     public Events() {
@@ -57,21 +55,8 @@ public class Events {
         return game_event;
     }
 
-    /*public String getMessage() {
-        return message;
-    }*/
-
     public void setMessage(String message) {
         this.message = message;
     }
-
-    /*public String getPlayerId() {
-        return playerId;
-    }*/
-
-    /*public void setPlayerId(String id) {
-        playerId = id;
-    }*/
-
 
 }

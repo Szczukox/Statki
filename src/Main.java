@@ -20,17 +20,9 @@ public class Main extends JPanel {
     JLabel twojRuch;
     JLabel ruchPrzeciwnika;
 
-    /*public int getStrzał_x() {
-        return strzał_x;
-    }*/
-
     public void setStrzał_x(int strzał_x) {
         this.strzał_x = strzał_x;
     }
-
-    /*public int getStrzał_y() {
-        return strzał_y;
-    }*/
 
     public void setStrzał_y(int strzał_y) {
         this.strzał_y = strzał_y;
@@ -115,11 +107,9 @@ public class Main extends JPanel {
                     client.setHost(textField.getText());
                     client.setPort(Integer.parseInt(textField1.getText()));
                     if (client.start()) {
-                        //Events ge = new Events(Events.CLIENT_LOGIN);
-                        //sendMessage(ge);
                         JOptionPane.showMessageDialog(frame, "Oczekiwanie na drugiego gracza");
                     } else {
-                        JOptionPane.showMessageDialog(frame, "ERROR");
+                        JOptionPane.showMessageDialog(frame, "Błąd serwera");
                     }
                     bt.setEnabled(false);
                     textField.setEnabled(false);
@@ -340,4 +330,5 @@ public class Main extends JPanel {
     public void setToken(boolean token) {
         this.token = token;
     }
-    }
+
+}

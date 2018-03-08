@@ -6,10 +6,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class Plansza extends JPanel {
     public Pole[][] plansza = new Pole[10][10];
@@ -32,14 +30,6 @@ public class Plansza extends JPanel {
     public int getId_gracza() {
         return id_gracza;
     }
-
-   /* public void setId_gracza(int id_gracza) {
-        this.id_gracza = id_gracza;
-    }*/
-
-    /*public boolean isGotowy() {
-        return gotowy;
-    }*/
 
     public void setGotowy(boolean gotowy) {
         this.gotowy = gotowy;
@@ -72,20 +62,6 @@ public class Plansza extends JPanel {
             e.printStackTrace();
         }
 
-        /*Statek statek1 = new Statek(1);
-        Statek statek2 = new Statek(2);
-        Statek statek3 = new Statek(3);
-        Statek statek4 = new Statek(4);
-        Statek statek5 = new Statek(5);
-        ArrayList<Statek> statki = new ArrayList<Statek>();
-
-        statki.add(statek1);
-        statki.add(statek2);
-        statki.add(statek3);
-        statki.add(statek4);
-        statki.add(statek5);*/
-
-
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -110,10 +86,6 @@ public class Plansza extends JPanel {
         });
 
     }
-
-
-
-
 
     public void ustaw_statki(int x, int y, MouseEvent e){
         if (!ustawione) {
@@ -244,7 +216,6 @@ public class Plansza extends JPanel {
                             }
                         }
                         if (czy_wolne == false) {
-                            //czy_wolne = true;
                             dlugosc--;
                         }
                     }
@@ -395,6 +366,5 @@ public class Plansza extends JPanel {
         g.drawImage(img, 0, 0, this);
         paintComponents(g);
     }
-
 
 }
